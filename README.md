@@ -3,6 +3,9 @@ This is a sample application with Cqrs, microservices using Ocelot gateway and B
 
 Data is stored in memory for demonstration purposes and event sourcing part is not implemented yet.
 
+
+<h2> How to run? </h2>
+
 Download the code and run in order
 
 Accounting.Service </br>
@@ -10,6 +13,10 @@ Transactions.Service </br>
 PublicGateway </br>
 and </br>
 BlazorUI app </br>
+</br>
+or 
+</br>
+docker-compose up docker-compose.yml</br>
 
 <h2> For swagger definitions : </h2>
 
