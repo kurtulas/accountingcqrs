@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="EventFlow" Version="0.79.4216" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\modules\accounting\src\Accounting.Domain\Accounting.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

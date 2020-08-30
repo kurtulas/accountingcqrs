@@ -1,0 +1,87 @@
+﻿@page "/transactions/{CustomerId}/{AccountId}"
+
+@using System.Net.Http
+@using BlazorUI.Data
+@inject IModalService Modal
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+<h1>Transactions</h1>
+
+<p>Gets data from public gateway.</p>
+
+@if (transactions == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{ 
+    <table class="table">
+        <thead>
+            <tr>
+                <td align="right">
+                    <button @onclick="ShowCreateTransaction" class="btn btn-primary">Create Transaction</button>
+
+                </td>
+
+            </tr>
+        </thead>
+    </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in transactions)
+            {
+                <tr>
+                    <td>@transaction.Id</td>
+                    <td>@transaction.Amount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public string AccountId { get; set; }
+
+    [Parameter]
+    public string CustomerId { get; set; }
+
+    private Transaction[] transactions;
+
+    async Task GetTransactions()
+    {
+        transactions = await Http.GetFromJsonAsync<Transaction[]>("/api/transaction/Transaction/AccountId?accountId=" + AccountId);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetTransactions();
+    }
+
+    async Task ShowCreateTransaction()
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(CreateTransaction.AccountId), AccountId);
+        parameters.Add(nameof(CreateTransaction.CustomerId), CustomerId);
+
+        var createModal = Modal.Show<CreateTransaction>("Create new transaction");
+        var result = await createModal.Result;
+        if (result.Cancelled)
+        {
+
+        }
+        else
+        {
+            await GetTransactions();
+        }
+    }
+}

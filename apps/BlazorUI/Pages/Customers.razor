@@ -1,0 +1,86 @@
+﻿@page "/customers"
+@using System.Net.Http
+@using BlazorUI.Data
+@inject IModalService Modal
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+
+<h1>Customers</h1>
+
+<p>Gets data from public gateway.</p>
+
+
+
+
+@if (customers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td align="right">
+                    <button @onclick="ShowCreateCustomer" class="btn btn-primary">Create Customer</button>
+
+                </td>
+
+            </tr>
+        </thead>
+    </table>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Accounts</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in customers)
+            {
+                <tr>
+                    <td>@customer.Id</td>
+                    <td>@customer.Name</td>
+                    <td>@customer.Surname</td>
+                    <td><a href="/Accounts/@customer.Id">Accounts</a></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+}
+
+
+
+@code {
+    private Customer[] customers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        customers = await Http.GetFromJsonAsync<Customer[]>("/api/accounting/Customer");
+    }
+
+    async Task ShowCreateCustomer()
+    {
+        var createModal = Modal.Show<CreateCustomer>("Create new customer");
+        var result = await createModal.Result;
+        if (result.Cancelled)
+        {
+
+        }
+        else
+        {
+            customers = await Http.GetFromJsonAsync<Customer[]>("/api/accounting/Customer");
+
+        }
+
+    }
+}

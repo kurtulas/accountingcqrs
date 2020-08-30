@@ -1,0 +1,34 @@
+﻿@using BlazorUI.Data
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject IToastService toastService
+
+<div class="simple-form">
+
+    <div class="form-group">
+        <label for="year">Amount</label>
+        <input @bind="@CreateTransactionInput.Amount" type="text" class="form-control" id="credit" />
+    </div>
+
+    <button @onclick="SaveTransaction" class="btn btn-primary">Create</button>
+    <button @onclick="BlazoredModal.Cancel" class="btn btn-secondary">Cancel</button>
+</div>
+@code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+    [Parameter] public string AccountId { get; set; }
+    [Parameter] public string CustomerId { get; set; }
+    CreateTransactionInput CreateTransactionInput { get; set; }
+
+    protected override void OnInitialized()
+    {
+        CreateTransactionInput = new CreateTransactionInput();
+    }
+
+    async Task SaveTransaction()
+    {
+        await Http.PostAsJsonAsync("/api/accounting/Transaction", CreateTransactionInput);
+        await BlazoredModal.Close(ModalResult.Ok<CreateTransactionInput>(CreateTransactionInput));
+        toastService.ShowInfo("Account saved");
+    }
+
+}
