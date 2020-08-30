@@ -5,19 +5,19 @@ Data is stored in memory for demonstration purposes and event sourcing part is n
 
 Download the code and run in order
 
-Accounting.Service
-Transactions.Service
-PublicGateway 
-and 
-BlazorUI app
+Accounting.Service </br>
+Transactions.Service </br>
+PublicGateway </br>
+and </br>
+BlazorUI app </br>
 
-For swagger definitions :
+<h2> For swagger definitions : </h2>
 
 Public gateway : http://localhost:5000/swagger </br>
 Accounting : http://localhost:5001/swagger </br>
 Transactions : http://localhost:5002/swagger </br>
 
-<h3>Architecture</h3>
+<h2>Architecture</h2>
 <img src="img/architecture.png">
 
 
