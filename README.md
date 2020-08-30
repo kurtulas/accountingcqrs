@@ -1,8 +1,4 @@
-# devgnostix test task 
 
-This repo is created for devgnostix test task. 
+This is a sample application with Cqrs, microservices and Blazor as ui
 
-Application project is the console application to test and Library is the dynamic compiler library.
-
-
-
+<img src="img/architecture.png">
