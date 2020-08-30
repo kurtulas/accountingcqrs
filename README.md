@@ -1,5 +1,5 @@
 
-This is a sample application with Cqrs, microservices using Ocelot gateway and Blazor as ui.
+This is a sample application with Cqrs event sourcing, microservices using Ocelot gateway and Blazor as ui.
 
 Data is stored in memory for demonstration purposes and event sourcing part is not implemented yet.
 
