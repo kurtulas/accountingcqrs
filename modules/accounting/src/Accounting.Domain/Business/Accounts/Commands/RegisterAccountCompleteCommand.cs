@@ -25,7 +25,7 @@ namespace Accounting.Domain.Business.Accounts.Commands
     {
         public override Task ExecuteAsync(AccountAggregate aggregate, RegisterAccountCompleteCommand command, CancellationToken cancellationToken)
         {
-            aggregate.AccountRegisterComplete(command.Account);
+            aggregate.AccountRegisterComplete(command.Account, command.InitialCredit);
             return Task.CompletedTask;
         }
     }

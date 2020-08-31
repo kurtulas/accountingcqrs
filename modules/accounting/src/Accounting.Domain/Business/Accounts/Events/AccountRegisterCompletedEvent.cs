@@ -11,10 +11,11 @@ namespace Accounting.Domain.Business.Accounts.Events
 
         public float InitialCredit { get; set; }
 
-        public float Balance { get; set; }
-        public AccountRegisterCompletedEvent(AccountEntity entity)
+         
+        public AccountRegisterCompletedEvent(AccountEntity entity, float initialCredit)
         {
             Entity = entity;
+            InitialCredit = initialCredit;
         }
 
     }

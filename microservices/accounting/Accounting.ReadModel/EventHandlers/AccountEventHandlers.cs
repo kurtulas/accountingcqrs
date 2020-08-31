@@ -38,10 +38,14 @@ namespace Accounting.ReadModel.EventHandlers
 
         public async Task HandleAsync(IDomainEvent<AccountAggregate, AccountId, AccountRegisterCompletedEvent> domainEvent, CancellationToken cancellationToken)
         {
-            await _commandBus.PublishAsync(new RegisterTransactionCommand(domainEvent.AggregateIdentity.Value,
-                domainEvent.AggregateEvent.Entity.CustomerId,                
-                domainEvent.AggregateEvent.InitialCredit
-            ), cancellationToken);
+            if (domainEvent.AggregateEvent.InitialCredit > 0)
+            {
+                await _commandBus.PublishAsync(new RegisterTransactionCommand(domainEvent.AggregateIdentity.Value,
+                    domainEvent.AggregateEvent.Entity.CustomerId,
+                    domainEvent.AggregateEvent.InitialCredit
+                ), cancellationToken);
+            }
+            
         }
     }
 }

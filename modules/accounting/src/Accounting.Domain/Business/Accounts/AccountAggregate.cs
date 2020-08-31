@@ -27,9 +27,9 @@ namespace Accounting.Domain.Business.Accounts
             return ExecutionResult.Success();
         }
 
-        public void AccountRegisterComplete(AccountEntity entity)
+        public void AccountRegisterComplete(AccountEntity entity, float initialCredits)
         {
-            Emit(new AccountRegisterCompletedEvent(entity));
+            Emit(new AccountRegisterCompletedEvent(entity, initialCredits));
 
         }
     }

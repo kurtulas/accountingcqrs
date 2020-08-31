@@ -17,6 +17,7 @@ using Accounting.Domain.Module;
 using Accounting.Service.CommandServices;
 using Accounting.Domain.Application.CommandServices;
 using Accounting.ReadModel.Module;
+using Transaction.ReadModel.Module;
 
 namespace Accounting.Service
 {
@@ -43,6 +44,7 @@ namespace Accounting.Service
                 ef.UseConsoleLog();
                 ef.RegisterModule<DomainModule>();
                 ef.RegisterModule<AccountingReadModelModule>();
+                ef.RegisterModule<TransactionReadModelModule>();
                 ef.RegisterServices(s =>
                 {
                     s.Register<ICustomerCommandService, CustomerCommandService>();
