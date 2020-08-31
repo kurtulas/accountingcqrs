@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   blazorui:
-    image: ${DOCKER_REGISTRY-}blazorui
+    image: blazorui
     build:
       context: .
       dockerfile: apps/BlazorUI/Dockerfile
@@ -11,7 +11,7 @@ services:
     ports:
       - "5010:80"
   gateway:
-    image: ${DOCKER_REGISTRY-}gateway
+    image: gateway
     build:
       context: .
       dockerfile: gateways/PublicGateway/Dockerfile
@@ -20,7 +20,7 @@ services:
     ports:
       - "5000"
   accounting:
-    image: ${DOCKER_REGISTRY-}accountingservice
+    image: accountingservice
     build:
       context: .
       dockerfile: microservices/accounting/Accounting.Service/Dockerfile
@@ -29,7 +29,7 @@ services:
     ports:
       - "5001"
   transactions:
-    image: ${DOCKER_REGISTRY-}transactionservice
+    image: transactionservice
     build:
       context: .
       dockerfile: microservices/transactions/Transaction.Service/Dockerfile     

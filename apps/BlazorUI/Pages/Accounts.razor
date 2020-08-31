@@ -1,4 +1,4 @@
-﻿@page "/accounts/{customerId}"
+﻿@page "/accounts/{CustomerId}"
 @using System.Net.Http
 @using BlazorUI.Data
 @inject IModalService Modal
@@ -70,7 +70,7 @@ else
         var parameters = new ModalParameters();
         parameters.Add(nameof(CreateAccount.CustomerId), CustomerId);
 
-        var createModal = Modal.Show<CreateAccount>("Create new account");
+        var createModal = Modal.Show<CreateAccount>("Create new account", parameters);
         var result = await createModal.Result;
         if (result.Cancelled)
         {

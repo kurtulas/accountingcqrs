@@ -30,10 +30,8 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Balance</th>
+                <th>Id</th>                
+                <th>Amount</th>
             </tr>
         </thead>
         <tbody>
@@ -73,7 +71,7 @@ else
         parameters.Add(nameof(CreateTransaction.AccountId), AccountId);
         parameters.Add(nameof(CreateTransaction.CustomerId), CustomerId);
 
-        var createModal = Modal.Show<CreateTransaction>("Create new transaction");
+        var createModal = Modal.Show<CreateTransaction>("Create new transaction", parameters);
         var result = await createModal.Result;
         if (result.Cancelled)
         {

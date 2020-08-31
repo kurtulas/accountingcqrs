@@ -26,9 +26,12 @@
 
     async Task SaveTransaction()
     {
-        await Http.PostAsJsonAsync("/api/accounting/Transaction", CreateTransactionInput);
+        CreateTransactionInput.AccountId = AccountId;
+        CreateTransactionInput.CustomerId = CustomerId;
+        await Http.PostAsJsonAsync("/api/Transaction/Transaction", CreateTransactionInput);
+
         await BlazoredModal.Close(ModalResult.Ok<CreateTransactionInput>(CreateTransactionInput));
-        toastService.ShowInfo("Account saved");
+        toastService.ShowInfo("Transaction saved");
     }
 
 }

@@ -22,16 +22,18 @@
 @code {
     [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
 
-    [Parameter] public int CustomerId { get; set; }
+    [Parameter] public string CustomerId { get; set; }
     CreateAccountInput CreateAccountInput { get; set; }
 
     protected override void OnInitialized()
     {
         CreateAccountInput = new CreateAccountInput();
+        CreateAccountInput.CustomerId = CustomerId;
     }
     async Task SaveAccount()
     {
-        await Http.PostAsJsonAsync("/api/accounting/Account", CreateAccountInput);
+
+        await Http.PostAsJsonAsync("/api/accounting/Accounts", CreateAccountInput);
         await BlazoredModal.Close(ModalResult.Ok<CreateAccountInput>(CreateAccountInput));
         toastService.ShowInfo("Account saved");
 
