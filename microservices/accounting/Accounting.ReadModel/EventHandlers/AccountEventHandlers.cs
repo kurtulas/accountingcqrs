@@ -40,8 +40,9 @@ namespace Accounting.ReadModel.EventHandlers
         {
             if (domainEvent.AggregateEvent.InitialCredit > 0)
             {
-                await _commandBus.PublishAsync(new RegisterTransactionCommand(domainEvent.AggregateIdentity.Value,
+                await _commandBus.PublishAsync(new RegisterTransactionCommand(
                     domainEvent.AggregateEvent.Entity.CustomerId,
+                    domainEvent.AggregateIdentity.Value,                    
                     domainEvent.AggregateEvent.InitialCredit
                 ), cancellationToken);
             }
