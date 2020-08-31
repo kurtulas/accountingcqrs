@@ -11,11 +11,11 @@ namespace Accounting.Domain.Business.Transactions.Commands
 {
     public class RegisterTransactionCompleteCommand : Command<TransactionAggregate, TransactionId, IExecutionResult>
     {
-        public TransactionEntity Entity { get; set; }
+        public TransactionEntity Transaction { get; set; }
         
         public RegisterTransactionCompleteCommand(TransactionEntity entity) : base(TransactionId.New)
         {
-            Entity = entity;
+            Transaction = entity;
         }
     }
 
@@ -23,7 +23,7 @@ namespace Accounting.Domain.Business.Transactions.Commands
     {
         public override Task ExecuteAsync(TransactionAggregate aggregate, RegisterTransactionCompleteCommand command, CancellationToken cancellationToken)
         {
-            aggregate.TransactionRegisterCompleted(command.Entity);
+            aggregate.TransactionRegisterCompleted(command.Transaction);
             return Task.CompletedTask;
         }
     }
