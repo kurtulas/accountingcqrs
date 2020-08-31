@@ -18,7 +18,7 @@ using Accounting.Service.CommandServices;
 using Accounting.Domain.Application.CommandServices;
 using Accounting.ReadModel.Module;
 
-namespace Accounting
+namespace Accounting.Service
 {
     public class Startup
     {
