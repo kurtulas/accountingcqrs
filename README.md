@@ -1,8 +1,17 @@
-# devgnostix test task 
 
-This repo is created for devgnostix test task. 
+This is a sample application with Cqrs, microservices using Ocelot gateway and Blazor as ui.
 
-Application project is the console application to test and Library is the dynamic compiler library.
+Data is stored in memory for demonstration purposes and event sourcing part is not implemented yet.
 
+Download the code and run in order
+
+Accounting.Service
+Transactions.Service
+PublicGateway 
+and 
+BlazorUI app
+
+<h3>Architecture</h3>
+<img src="img/architecture.png">
 
 
