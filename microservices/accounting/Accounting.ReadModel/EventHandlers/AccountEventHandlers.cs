@@ -37,7 +37,8 @@ namespace Accounting.ReadModel.EventHandlers
                 cancellationToken);
         }
 
-        public async Task HandleAsync(IDomainEvent<AccountAggregate, AccountId, AccountRegisterCompletedEvent> domainEvent,
+        public async Task HandleAsync(IDomainEvent<AccountAggregate, AccountId, 
+            AccountRegisterCompletedEvent> domainEvent,
             CancellationToken cancellationToken)
         {
             if (domainEvent.AggregateEvent.InitialCredit > 0)

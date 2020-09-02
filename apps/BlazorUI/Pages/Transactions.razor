@@ -8,7 +8,7 @@
 
 <h1>Transactions</h1>
 
-<p>Gets data from public gateway.</p>
+<p>Account : @AccountId</p>
 
 @if (transactions == null)
 {
@@ -57,7 +57,8 @@ else
 
     async Task GetTransactions()
     {
-        transactions = await Http.GetFromJsonAsync<Transaction[]>("/api/transaction/Transaction/AccountId?accountId=" + AccountId);
+        var url = "/api/transaction/Transaction/AccountId?accountId=" + AccountId;        
+        transactions = await Http.GetFromJsonAsync<Transaction[]>(url);
     }
 
     protected override async Task OnInitializedAsync()

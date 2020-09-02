@@ -37,7 +37,7 @@ namespace Transaction.ReadModel.EventHandlers
         {
             await _commandBus.PublishAsync(new RegisterTransactionCommand(
                 domainEvent.AggregateEvent.Entity.CustomerId,
-                domainEvent.AggregateEvent.Entity.Id.Value,
+                domainEvent.AggregateIdentity.Value,
                 domainEvent.AggregateEvent.InitialCredit
                 ), cancellationToken);
         }
