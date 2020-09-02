@@ -35,6 +35,7 @@ namespace Transaction.ReadModel.EventHandlers
  
         public async Task HandleAsync(IDomainEvent<AccountAggregate, AccountId, AccountRegisterCompletedEvent> domainEvent, CancellationToken cancellationToken)
         {
+            if (domainEvent.AggregateEvent.InitialCredit == 0) return;
             await _commandBus.PublishAsync(new RegisterTransactionCommand(
                 domainEvent.AggregateEvent.Entity.CustomerId,
                 domainEvent.AggregateIdentity.Value,

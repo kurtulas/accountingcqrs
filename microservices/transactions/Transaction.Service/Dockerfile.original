@@ -9,7 +9,6 @@ WORKDIR /src
 COPY ["microservices/transactions/Transaction.Service/Transaction.Service.csproj", "microservices/transactions/Transaction.Service/"]
 COPY ["modules/accounting/src/Accounting.Domain/Accounting.Domain.csproj", "modules/accounting/src/Accounting.Domain/"]
 COPY ["microservices/transactions/Transaction.ReadModel/Transaction.ReadModel.csproj", "microservices/transactions/Transaction.ReadModel/"]
-COPY ["infrastructures/Infrastructure/Infrastructure.csproj", "infrastructures/Infrastructure/"]
 RUN dotnet restore "microservices/transactions/Transaction.Service/Transaction.Service.csproj"
 COPY . .
 WORKDIR "/src/microservices/transactions/Transaction.Service"

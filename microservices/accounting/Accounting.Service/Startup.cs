@@ -23,6 +23,7 @@ using Hangfire;
 using Hangfire.MemoryStorage;
 using EventFlow.RabbitMQ.Extensions;
 using EventFlow.RabbitMQ;
+using Infrastructure.Configurations;
 
 namespace Accounting.Service
 {
@@ -44,17 +45,18 @@ namespace Accounting.Service
             services.AddAutoMapper(typeof(Startup));
             services.AddEventFlow(ef =>
             {
+                var envconfig = EnvironmentConfiguration.Bind(Configuration);
+                services.AddSingleton(envconfig);
                 ef.AddDefaults(typeof(Startup).Assembly);
                 //ef.Configure(cfg => cfg.IsAsynchronousSubscribersEnabled = true);
                 ef.PublishToRabbitMq(
-                   RabbitMqConfiguration.With(new Uri(@"amqp://guest:guest@localhost:5672"),
-                       true, 5, "eventflow"));
+                   RabbitMqConfiguration.With(new Uri(envconfig.RabbitMqConnection),
+                       true, 5, envconfig.RabbitExchange));
                 ef.AddAspNetCore();
                 //ef.UseHangfireJobScheduler();
                 ef.UseConsoleLog();
                 ef.RegisterModule<DomainModule>();
-                ef.RegisterModule<AccountingReadModelModule>();
-                //ef.RegisterModule<TransactionReadModelModule>();
+                ef.RegisterModule<AccountingReadModelModule>();                
                 ef.RegisterServices(s =>
                 {
                     s.Register<ICustomerCommandService, CustomerCommandService>();
@@ -78,26 +80,15 @@ namespace Accounting.Service
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Accounting API V1");
-            });
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
-            
-
-            //app.UseHangfireDashboard();
-            //app.UseHangfireServer();
+            app.UseSwagger()
+                .UseSwaggerUI(c =>{ c.SwaggerEndpoint("/swagger/v1/swagger.json", "Accounting API V1");})
+                .UseRouting()
+                .UseAuthorization()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
         }
     }
 }

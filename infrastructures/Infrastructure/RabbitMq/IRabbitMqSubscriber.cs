@@ -10,6 +10,9 @@ namespace Infrastructure.RabbitMq
 {
     public interface IRabbitMqSubscriber
     {
-        Task SubscribeAsync(string exchange, string queue, Action<IList<IDomainEvent>, IDomainEventPublisher> action, IDomainEventPublisher domainEventPublisher, CancellationToken cancellationToken);
+        Task SubscribeAsync(string exchange, string queue, 
+            Action<IList<IDomainEvent>, IDomainEventPublisher> action, 
+            IDomainEventPublisher domainEventPublisher, 
+            CancellationToken cancellationToken);
     }
 }

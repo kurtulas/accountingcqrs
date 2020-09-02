@@ -8,7 +8,6 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["microservices/accounting/Accounting.Service/Accounting.Service.csproj", "microservices/accounting/Accounting.Service/"]
 COPY ["modules/accounting/src/Accounting.Domain/Accounting.Domain.csproj", "modules/accounting/src/Accounting.Domain/"]
-COPY ["infrastructures/Infrastructure/Infrastructure.csproj", "infrastructures/Infrastructure/"]
 COPY ["microservices/accounting/Accounting.ReadModel/Accounting.ReadModel.csproj", "microservices/accounting/Accounting.ReadModel/"]
 RUN dotnet restore "microservices/accounting/Accounting.Service/Accounting.Service.csproj"
 COPY . .

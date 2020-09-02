@@ -29,10 +29,7 @@ namespace BlazorUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddServerSideBlazor();
-            //services.AddSingleton<WeatherForecastService>();
-            //services.AddSingleton<IAccountingService, AccountingService>();
-            //services.AddSingleton<ITransactionService, TransactionService>();
+            services.AddServerSideBlazor();            
             services.AddBlazoredModal();
             services.AddBlazoredToast();
             services.AddScoped(sp =>

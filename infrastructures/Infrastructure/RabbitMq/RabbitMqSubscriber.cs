@@ -23,8 +23,7 @@ namespace Infrastructure.RabbitMq
     {
         private readonly ILog _log;
         private readonly IRabbitMqConnectionFactory _connectionFactory;
-        private readonly IRabbitMqConfiguration _configuration;
-        private readonly ITransientFaultHandler<IRabbitMqRetryStrategy> _transientFaultHandler;
+        private readonly IRabbitMqConfiguration _configuration;        
         private readonly AsyncLock _asyncLock = new AsyncLock();
         private readonly Dictionary<Uri, IRabbitConnection> _connections = new Dictionary<Uri, IRabbitConnection>();
         private readonly IRabbitMqMessageFactory _rabbitMqMessageFactory;
@@ -35,8 +34,7 @@ namespace Infrastructure.RabbitMq
         public RabbitMqSubscriber(
             ILog log,
             IRabbitMqConnectionFactory connectionFactory,
-            IRabbitMqConfiguration configuration,
-            ITransientFaultHandler<IRabbitMqRetryStrategy> transientFaultHandler,
+            IRabbitMqConfiguration configuration,            
             IRabbitMqMessageFactory rabbitMqMessageFactory,
             IEventJsonSerializer eventJsonSerializer,
             IDispatchToEventSubscribers dispatchToEventSubscribers
@@ -44,15 +42,15 @@ namespace Infrastructure.RabbitMq
         {
             _log = log;
             _connectionFactory = connectionFactory;
-            _configuration = configuration;
-            _transientFaultHandler = transientFaultHandler;
+            _configuration = configuration;            
             _rabbitMqMessageFactory = rabbitMqMessageFactory;
             _eventJsonSerializer = eventJsonSerializer;
             _dispatchToEventSubscribers = dispatchToEventSubscribers;
         }
 
         public async Task SubscribeAsync(string exchange, string queue, 
-            Action<IList<IDomainEvent>, IDomainEventPublisher> action, IDomainEventPublisher domainEventPublisher, CancellationToken cancellationToken)
+            Action<IList<IDomainEvent>, IDomainEventPublisher> action,
+            IDomainEventPublisher domainEventPublisher, CancellationToken cancellationToken)
         {
             Uri uri = _configuration.Uri;
             IRabbitConnection rabbitConnection = null;
@@ -73,18 +71,9 @@ namespace Infrastructure.RabbitMq
 
                        _dispatchToEventSubscribers.DispatchToAsynchronousSubscribersAsync(domainEvent, cancellationToken);
                     };
-
-
                     model.BasicConsume(queue, false, consume);
                     return Task.CompletedTask;
                 }, cancellationToken);
-
-                //await _transientFaultHandler.TryAsync(
-                //    c => rabbitConnection.WithModelAsync(m => 
-                //    SubscribeAsync(m, exchange, queue, action, domainEventPublisher, c), c),
-                //    Label.Named("rabbitmq-subscribe"),
-                //    cancellationToken)
-                //    .ConfigureAwait(false);
             }
             catch (OperationCanceledException)
             {
@@ -124,51 +113,7 @@ namespace Infrastructure.RabbitMq
                 return rabbitConnection;
             }
         }
-
-        private Task<int> SubscribeAsync(IModel model, string exchange, string queue, Action<IList<IDomainEvent>, IDomainEventPublisher> action, IDomainEventPublisher domainEventPublisher, CancellationToken token)
-        {
-            _log.Verbose(
-                "Subscribing to {0} exchange and {1} to RabbitMQ host '{2}'",
-                exchange,
-                queue,
-                _configuration.Uri.Host);
-            try
-            {
-                //model.QueueDeclare(queue: queue, durable: true);
-                model.QueueDeclare(queue: queue, durable: true,
-                     exclusive: false, autoDelete: false, arguments: null);
-                model.ExchangeDeclare(exchange: exchange, type: "topic", durable: true);
-
-                model.QueueBind(queue: queue, exchange: exchange,
-                    routingKey: "eventflow.domainevent.account.account-register-complete.1");
-
-
-                EventingBasicConsumer consumer = new EventingBasicConsumer(model);
-                consumer.Received += (ch, ea) =>
-                {
-                    var rabbitMqMessage = CreateRabbitMqMessage(ea);
-                    var domainEvent = CreateDomainEvent(rabbitMqMessage);
-
-                    action(new List<IDomainEvent>() { domainEvent }, domainEventPublisher);
-
-                    model.BasicAck(ea.DeliveryTag, false);
-                };
-                model.BasicConsume(queue, false, "", false, false, null, consumer);
-
-            }
-            catch (Exception exp)
-            {
-                _log.Verbose(
-                    "Subscribing to {0} exchange and {1} to RabbitMQ host '{2}' Exception : {3}",
-                    exchange,
-                    queue,
-                    _configuration.Uri.Host, exp.Message);
-
-            }
-
-            return Task.FromResult(0);
-        }
-
+ 
         private static RabbitMqMessage CreateRabbitMqMessage(BasicDeliverEventArgs basicDeliverEventArgs)
         {
             var headers = basicDeliverEventArgs.BasicProperties.Headers.ToDictionary(kv => kv.Key,
@@ -181,17 +126,6 @@ namespace Infrastructure.RabbitMq
                 new Exchange(basicDeliverEventArgs.Exchange),
                 new RoutingKey(basicDeliverEventArgs.RoutingKey),
                 new MessageId(basicDeliverEventArgs.BasicProperties.MessageId));
-        }
-
-        public IDomainEvent CreateDomainEvent(RabbitMqMessage rabbitMqMessage)
-        {
-            var metadata = new Metadata(rabbitMqMessage.Headers);
-            var domainEvent = _eventJsonSerializer.Deserialize(
-                rabbitMqMessage.Message,
-                metadata);
-            _log.Verbose("Create Domain event {0}", domainEvent);
-
-            return domainEvent;
         }
 
         public void Dispose()

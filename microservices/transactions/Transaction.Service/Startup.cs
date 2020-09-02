@@ -28,6 +28,7 @@ using System.Threading;
 using EventFlow.RabbitMQ.Extensions;
 using EventFlow.RabbitMQ;
 using Infrastructure.RabbitMq;
+using Infrastructure.Configurations;
 
 namespace Transaction.Service
 {
@@ -50,10 +51,13 @@ namespace Transaction.Service
             services.AddAutoMapper(typeof(Startup));
             services.AddEventFlow(ef =>
             {
+                var envconfig = EnvironmentConfiguration.Bind(Configuration);
+                services.AddSingleton(envconfig);
+
                 ef.AddDefaults(typeof(Startup).Assembly);
                 ef.PublishToRabbitMq(
-                    RabbitMqConfiguration.With(new Uri(@"amqp://guest:guest@localhost:5672"),
-                        true, 5, "eventflow"));
+                    RabbitMqConfiguration.With(new Uri(envconfig.RabbitMqConnection),
+                        true, 5, envconfig.RabbitMqConnection));
                 ef.AddAspNetCore();
                 ef.UseConsoleLog();
                 ef.RegisterModule<DomainModule>();
@@ -94,6 +98,7 @@ namespace Transaction.Service
             });
 
             
+            //var environmentConfig = app.ApplicationServices.GetService<IRabbitMqSubscriber>();
             var subscriber = app.ApplicationServices.GetService<IRabbitMqSubscriber>();
             var configuration = app.ApplicationServices.GetService<IRabbitMqConfiguration>();
             var domainEventPublisher = app.ApplicationServices.GetService<IDomainEventPublisher>();
@@ -101,7 +106,7 @@ namespace Transaction.Service
             subscriber.SubscribeAsync(
                 "eventflow",
                 "eventflowQueue",
-                Infrastructure.RabbitMq.EventFlowRabbitExtensions.Listen,
+                EventFlowRabbitExtensions.Listen,
                 domainEventPublisher,
                 cancellationToken: CancellationToken.None)
                 .Wait();

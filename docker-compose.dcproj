@@ -3,9 +3,9 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>ab5ffe42-8f6e-4bc1-881c-a1d973b9a695</ProjectGuid>
+    <ProjectGuid>f1f4613b-fad1-48d0-89a2-b00ed06d6802</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/{Scheme}://{ServiceHost}:{ServicePort}</DockerServiceUrl>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>blazorui</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
