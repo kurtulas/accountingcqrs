@@ -25,6 +25,6 @@ Accounting : http://localhost:5001/swagger </br>
 Transactions : http://localhost:5002/swagger </br>
 
 <h2>Architecture</h2>
-
+<img src="img/architecture.png">
 
 
