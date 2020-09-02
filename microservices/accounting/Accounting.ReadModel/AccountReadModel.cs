@@ -18,7 +18,8 @@ namespace Accounting.ReadModel
         public virtual string Name { get; set; }
         public virtual float Balance { get; set; }
 
-        public void Apply(IReadModelContext context, IDomainEvent<AccountAggregate, AccountId, AccountRegisterCompletedEvent> domainEvent)
+        public void Apply(IReadModelContext context, 
+            IDomainEvent<AccountAggregate, AccountId, AccountRegisterCompletedEvent> domainEvent)
         {
             var _account = domainEvent.AggregateEvent.Entity;
 

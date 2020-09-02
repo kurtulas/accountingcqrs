@@ -17,7 +17,12 @@ using Accounting.Domain.Module;
 using Accounting.Service.CommandServices;
 using Accounting.Domain.Application.CommandServices;
 using Accounting.ReadModel.Module;
-using Transaction.ReadModel.Module;
+using Accounting.Domain.Business.Transactions.Commands;
+using EventFlow.Hangfire.Extensions;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using EventFlow.RabbitMQ.Extensions;
+using EventFlow.RabbitMQ;
 
 namespace Accounting.Service
 {
@@ -40,19 +45,23 @@ namespace Accounting.Service
             services.AddEventFlow(ef =>
             {
                 ef.AddDefaults(typeof(Startup).Assembly);
+                //ef.Configure(cfg => cfg.IsAsynchronousSubscribersEnabled = true);
+                ef.PublishToRabbitMq(
+                   RabbitMqConfiguration.With(new Uri(@"amqp://guest:guest@localhost:5672"),
+                       true, 5, "eventflow"));
                 ef.AddAspNetCore();
+                //ef.UseHangfireJobScheduler();
                 ef.UseConsoleLog();
                 ef.RegisterModule<DomainModule>();
                 ef.RegisterModule<AccountingReadModelModule>();
-                ef.RegisterModule<TransactionReadModelModule>();
+                //ef.RegisterModule<TransactionReadModelModule>();
                 ef.RegisterServices(s =>
                 {
                     s.Register<ICustomerCommandService, CustomerCommandService>();
                     s.Register<IAccountCommandService, AccountCommandService>();
+                    s.Register<ITransactionCommandService, TransactionCommandService>();
                 });
-            });
-
- 
+            });        
         }
 
         private void ConfigureSwagger(IServiceCollection services)
@@ -84,6 +93,11 @@ namespace Accounting.Service
             {
                 endpoints.MapControllers();
             });
+
+            
+
+            //app.UseHangfireDashboard();
+            //app.UseHangfireServer();
         }
     }
 }

@@ -5,7 +5,7 @@ using Accounting.Domain.Business.Transactions.Events;
 using EventFlow.Aggregates;
 using EventFlow.ReadStores;
 
-namespace Transaction.ReadModel
+namespace Accounting.ReadModel
 {
     public class TransactionReadModel : IReadModel,
         IAmReadModelFor<TransactionAggregate, TransactionId, TransactionRegisterCompletedEvent>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Accounting.Domain.Business.Customers.Commands
 {
-    public class RegisterCustomerCommand : Command<CustomerAggregate, CustomerId, IExecutionResult >
+    public class RegisterCustomerCommand : Command<CustomerAggregate, CustomerId, IExecutionResult>
     {
         public RegisterCustomerCommand(string name, string surname, float initialCredit) : base(CustomerId.New)
         {

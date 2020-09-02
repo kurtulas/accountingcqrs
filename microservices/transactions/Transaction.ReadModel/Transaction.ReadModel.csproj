@@ -3,10 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="AddNewEmployeeSubscriber.cs" />
+  </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="EventFlow" Version="0.79.4216" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\infrastructures\Infrastructure\Infrastructure.csproj" />
 	  <ProjectReference Include="..\..\..\modules\accounting\src\Accounting.Domain\Accounting.Domain.csproj" />
 	</ItemGroup>
 

@@ -17,15 +17,17 @@ namespace Accounting.ReadModel.Module
         {
 
             options
-                .AddDefaults(typeof(AccountingReadModelModule).Assembly)        
+                .AddDefaults(typeof(AccountingReadModelModule).Assembly)
+                 .Configure(cfg => cfg.IsAsynchronousSubscribersEnabled = true)
+                 
                 .UseInMemoryReadStoreFor<CustomerReadModel>()
-                .UseInMemoryReadStoreFor<AccountReadModel>()
+                .UseInMemoryReadStoreFor<AccountReadModel>()                
                 .RegisterServices(s => {
 
                     s.Register<ICustomerQueryService, CustomerQueryService>();
-                    s.Register<IAccountQueryService, AccountQueryService>();
+                    s.Register<IAccountQueryService, AccountQueryService>();                    
                     s.Register<IReadModelStore<AccountReadModel>, InMemoryReadStore<AccountReadModel>>();
-                    s.Register<IReadModelStore<CustomerReadModel>, InMemoryReadStore<CustomerReadModel>>();
+                    s.Register<IReadModelStore<CustomerReadModel>, InMemoryReadStore<CustomerReadModel>>();                                        
                 });
         }
     }

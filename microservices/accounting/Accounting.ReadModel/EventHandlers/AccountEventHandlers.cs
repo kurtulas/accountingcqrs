@@ -32,21 +32,23 @@ namespace Accounting.ReadModel.EventHandlers
         public async Task HandleAsync(IDomainEvent<AccountAggregate, AccountId, AccountRegisteredEvent> domainEvent,
            CancellationToken cancellationToken)
         {
-            await _commandBus.PublishAsync(new RegisterAccountCompleteCommand(domainEvent.AggregateEvent.Account, domainEvent.AggregateEvent.InitialCredit),
+            await _commandBus.PublishAsync(new RegisterAccountCompleteCommand(domainEvent.AggregateEvent.Account,
+                domainEvent.AggregateEvent.InitialCredit),
                 cancellationToken);
         }
 
-        public async Task HandleAsync(IDomainEvent<AccountAggregate, AccountId, AccountRegisterCompletedEvent> domainEvent, CancellationToken cancellationToken)
+        public async Task HandleAsync(IDomainEvent<AccountAggregate, AccountId, AccountRegisterCompletedEvent> domainEvent,
+            CancellationToken cancellationToken)
         {
             if (domainEvent.AggregateEvent.InitialCredit > 0)
             {
                 await _commandBus.PublishAsync(new RegisterTransactionCommand(
                     domainEvent.AggregateEvent.Entity.CustomerId,
-                    domainEvent.AggregateIdentity.Value,                    
+                    domainEvent.AggregateIdentity.Value,
                     domainEvent.AggregateEvent.InitialCredit
                 ), cancellationToken);
             }
-            
+
         }
     }
 }

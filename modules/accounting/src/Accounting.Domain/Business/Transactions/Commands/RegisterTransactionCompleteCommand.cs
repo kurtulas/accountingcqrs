@@ -23,7 +23,7 @@ namespace Accounting.Domain.Business.Transactions.Commands
     {
         public override Task ExecuteAsync(TransactionAggregate aggregate, RegisterTransactionCompleteCommand command, CancellationToken cancellationToken)
         {
-            aggregate.TransactionRegisterCompleted(command.Transaction);
+            aggregate.TransactionRegisterComplete(command.Transaction);
             return Task.CompletedTask;
         }
     }

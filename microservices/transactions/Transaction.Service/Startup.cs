@@ -14,9 +14,20 @@ using EventFlow.DependencyInjection.Extensions;
 using EventFlow.Extensions;
 using EventFlow.AspNetCore.Extensions;
 using Accounting.Domain.Module;
-using Transaction.ReadModel.Module;
 using Transaction.Service.CommandServices;
 using Accounting.Domain.Application.CommandServices;
+using Accounting.Domain.Business.Transactions;
+using Accounting.Domain.Application.QueryServices;
+using Transaction.ReadModel.Module;
+using Transaction.ReadModel.Services;
+using EventFlow.Subscribers;
+using EventFlow.Aggregates;
+using Accounting.Domain.Business.Accounts;
+using Accounting.Domain.Business.Accounts.Events;
+using System.Threading;
+using EventFlow.RabbitMQ.Extensions;
+using EventFlow.RabbitMQ;
+using Infrastructure.RabbitMq;
 
 namespace Transaction.Service
 {
@@ -28,6 +39,8 @@ namespace Transaction.Service
         }
 
         public IConfiguration Configuration { get; }
+       
+        public IEventFlowOptions Options { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -38,15 +51,20 @@ namespace Transaction.Service
             services.AddEventFlow(ef =>
             {
                 ef.AddDefaults(typeof(Startup).Assembly);
+                ef.PublishToRabbitMq(
+                    RabbitMqConfiguration.With(new Uri(@"amqp://guest:guest@localhost:5672"),
+                        true, 5, "eventflow"));
                 ef.AddAspNetCore();
                 ef.UseConsoleLog();
                 ef.RegisterModule<DomainModule>();
                 ef.RegisterModule<TransactionReadModelModule>();
-                ef.RegisterServices(x=> 
+                ef.Configure(cfg => cfg.IsAsynchronousSubscribersEnabled = true);
+                ef.RegisterServices(s =>
                 {
-                    x.Register<ITransactionCommandService, TransactionCommandService>();
+                    s.Register<ITransactionCommandService, TransactionCommandService>();
                 });
             });
+
         }
 
         private void ConfigureSwagger(IServiceCollection services)
@@ -64,20 +82,30 @@ namespace Transaction.Service
                 app.UseDeveloperExceptionPage();
             }
             app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Accounting API V1");
             });
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            
+            var subscriber = app.ApplicationServices.GetService<IRabbitMqSubscriber>();
+            var configuration = app.ApplicationServices.GetService<IRabbitMqConfiguration>();
+            var domainEventPublisher = app.ApplicationServices.GetService<IDomainEventPublisher>();
+
+            subscriber.SubscribeAsync(
+                "eventflow",
+                "eventflowQueue",
+                Infrastructure.RabbitMq.EventFlowRabbitExtensions.Listen,
+                domainEventPublisher,
+                cancellationToken: CancellationToken.None)
+                .Wait();
+
         }
     }
 }

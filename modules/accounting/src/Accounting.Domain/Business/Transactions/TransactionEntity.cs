@@ -13,8 +13,8 @@ namespace Accounting.Domain.Business.Transactions
         }
 
         public string CustomerId { get; set; }
-
         public string AccountId { get; set; }
         public float Amount { get; set; }
+
     }
 }

@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accounting.Service", "micro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.Service", "microservices\transactions\Transaction.Service\Transaction.Service.csproj", "{3DCF491E-8967-411C-BB8B-AED9DBACEA83}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.ReadModel", "microservices\transactions\Transaction.ReadModel\Transaction.ReadModel.csproj", "{3F7591DE-D178-48A6-8B08-A4F1F6C1F521}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accounting.ReadModel", "microservices\accounting\Accounting.ReadModel\Accounting.ReadModel.csproj", "{780EEC4B-9240-4263-907F-B1AACCC9FC9C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorUI", "apps\BlazorUI\BlazorUI.csproj", "{97107D56-FCB1-4773-9E3F-B4CBE7591B7F}"
@@ -41,11 +39,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CAC7CE43
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration", "integration", "{6F354F65-CA47-45FF-BED9-187E8F9C6A20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Accounting.Tests", "tests\integration\Accounting.Tests\Accounting.Tests.csproj", "{AE98431F-3D6C-41E2-B2A5-3255CE185E12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accounting.Tests", "tests\integration\Accounting.Tests\Accounting.Tests.csproj", "{AE98431F-3D6C-41E2-B2A5-3255CE185E12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transaction.Tests", "tests\integration\Transaction.Tests\Transaction.Tests\Transaction.Tests.csproj", "{C49F81B0-FF5D-492F-8EE7-C405BB3ADC61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.Tests", "tests\integration\Transaction.Tests\Transaction.Tests\Transaction.Tests.csproj", "{C49F81B0-FF5D-492F-8EE7-C405BB3ADC61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Tests", "tests\integration\Gateway.Tests\Gateway.Tests.csproj", "{39213B40-BF6A-450D-B31B-9D3562FFFBC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gateway.Tests", "tests\integration\Gateway.Tests\Gateway.Tests.csproj", "{39213B40-BF6A-450D-B31B-9D3562FFFBC9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transaction.ReadModel", "microservices\transactions\Transaction.ReadModel\Transaction.ReadModel.csproj", "{2CA4577C-C655-4E1B-90D4-20BF71F5FE2F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructures", "infrastructures", "{750BB388-F6B5-4696-84C6-CE51E8DDAB57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "infrastructures\Infrastructure\Infrastructure.csproj", "{C55DD663-2B72-428F-AEF9-95FD471203B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,10 +73,6 @@ Global
 		{3DCF491E-8967-411C-BB8B-AED9DBACEA83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DCF491E-8967-411C-BB8B-AED9DBACEA83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DCF491E-8967-411C-BB8B-AED9DBACEA83}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F7591DE-D178-48A6-8B08-A4F1F6C1F521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F7591DE-D178-48A6-8B08-A4F1F6C1F521}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F7591DE-D178-48A6-8B08-A4F1F6C1F521}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F7591DE-D178-48A6-8B08-A4F1F6C1F521}.Release|Any CPU.Build.0 = Release|Any CPU
 		{780EEC4B-9240-4263-907F-B1AACCC9FC9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{780EEC4B-9240-4263-907F-B1AACCC9FC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{780EEC4B-9240-4263-907F-B1AACCC9FC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -97,6 +97,14 @@ Global
 		{39213B40-BF6A-450D-B31B-9D3562FFFBC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39213B40-BF6A-450D-B31B-9D3562FFFBC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39213B40-BF6A-450D-B31B-9D3562FFFBC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CA4577C-C655-4E1B-90D4-20BF71F5FE2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CA4577C-C655-4E1B-90D4-20BF71F5FE2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CA4577C-C655-4E1B-90D4-20BF71F5FE2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CA4577C-C655-4E1B-90D4-20BF71F5FE2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C55DD663-2B72-428F-AEF9-95FD471203B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C55DD663-2B72-428F-AEF9-95FD471203B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C55DD663-2B72-428F-AEF9-95FD471203B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C55DD663-2B72-428F-AEF9-95FD471203B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,13 +119,14 @@ Global
 		{1E2985D9-4E8B-4D50-AB1D-D93F2225FA79} = {273320C2-2254-4EB9-8547-035D3432A74F}
 		{A3FA7964-AD5D-45A8-8EC5-4F5C590351EF} = {1E2985D9-4E8B-4D50-AB1D-D93F2225FA79}
 		{3DCF491E-8967-411C-BB8B-AED9DBACEA83} = {D0152487-A195-4533-9844-A7D6C2A120B9}
-		{3F7591DE-D178-48A6-8B08-A4F1F6C1F521} = {D0152487-A195-4533-9844-A7D6C2A120B9}
 		{780EEC4B-9240-4263-907F-B1AACCC9FC9C} = {1E2985D9-4E8B-4D50-AB1D-D93F2225FA79}
 		{97107D56-FCB1-4773-9E3F-B4CBE7591B7F} = {D380842F-549F-4D2C-BC03-235CC86574D5}
 		{6F354F65-CA47-45FF-BED9-187E8F9C6A20} = {CAC7CE43-7A83-4FD9-A75F-6BDD4800D65F}
 		{AE98431F-3D6C-41E2-B2A5-3255CE185E12} = {6F354F65-CA47-45FF-BED9-187E8F9C6A20}
 		{C49F81B0-FF5D-492F-8EE7-C405BB3ADC61} = {6F354F65-CA47-45FF-BED9-187E8F9C6A20}
 		{39213B40-BF6A-450D-B31B-9D3562FFFBC9} = {6F354F65-CA47-45FF-BED9-187E8F9C6A20}
+		{2CA4577C-C655-4E1B-90D4-20BF71F5FE2F} = {D0152487-A195-4533-9844-A7D6C2A120B9}
+		{C55DD663-2B72-428F-AEF9-95FD471203B4} = {750BB388-F6B5-4696-84C6-CE51E8DDAB57}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CD8E6C3-DF92-4F6D-AE90-E87BF4FE955F}

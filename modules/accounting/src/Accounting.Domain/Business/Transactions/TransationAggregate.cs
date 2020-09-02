@@ -24,7 +24,7 @@ namespace Accounting.Domain.Business.Transactions
             return ExecutionResult.Success();
         }
 
-        public void TransactionRegisterCompleted(TransactionEntity entity)
+        public void TransactionRegisterComplete(TransactionEntity entity)
         {
             Emit(new TransactionRegisterCompletedEvent(entity));
         }

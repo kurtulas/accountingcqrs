@@ -1,5 +1,6 @@
 ﻿using Accounting.Domain.Application.QueryServices;
 using Accounting.Domain.Business.Transactions;
+using Accounting.ReadModel;
 using EventFlow.Queries;
 using EventFlow.ReadStores.InMemory.Queries;
 using System;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Transaction.ReadModel.Services
+namespace Accounting.ReadModel.Services
 {
     public class TransactionQueryService : ITransactionQueryService
     {
@@ -24,7 +25,7 @@ namespace Transaction.ReadModel.Services
         {
 
             var result = await _queryProcessor.ProcessAsync(
-                new InMemoryQuery<TransactionServiceReadModel>(x => true), ctx);
+                new InMemoryQuery<TransactionReadModel>(x => true), ctx);
             return result?.Select(x => new TransactionEntity(new TransactionId(x.AggregateId))
             {
                 AccountId = x.AccountId,
@@ -36,7 +37,7 @@ namespace Transaction.ReadModel.Services
 
         public async Task<TransactionEntity> GetTransactionByIdAsync(TransactionId customerId, CancellationToken ctx)
         {
-            var result = await _queryProcessor.ProcessAsync(new ReadModelByIdQuery<TransactionServiceReadModel>(customerId), ctx);
+            var result = await _queryProcessor.ProcessAsync(new ReadModelByIdQuery<TransactionReadModel>(customerId), ctx);
             return result?.ToTransaction();
 
         }
@@ -45,7 +46,7 @@ namespace Transaction.ReadModel.Services
         {
 
             var result = await _queryProcessor.ProcessAsync(
-                new InMemoryQuery<TransactionServiceReadModel>(x => x.AccountId == accountId), ctx);
+                new InMemoryQuery<TransactionReadModel>(x => x.AccountId == accountId), ctx);
             return result?.Select(x => new TransactionEntity(new TransactionId(x.AggregateId))
             {
                 CustomerId = x.CustomerId,
