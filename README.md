@@ -1,18 +1,20 @@
 
 This is a sample application with Cqrs event sourcing, microservices using Ocelot gateway and Blazor as ui.
 
-Data is stored in memory for demonstration purposes and event sourcing part is not implemented yet.
+Data is stored in memory for demonstration purposes and event store has not been implemented yet.
 
 
 <h2> How to run? </h2>
 
 Download the code and run in order
 
-Accounting.Service </br>
-Transactions.Service </br>
-PublicGateway </br>
+docker run --rm -it --hostname my-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
+
+dotnet run Accounting.Service </br>
+dotnet run Transactions.Service </br>
+dotnet run PublicGateway </br>
 and </br>
-BlazorUI app </br>
+dotnet run BlazorUI </br>
 </br>
 or 
 </br>
